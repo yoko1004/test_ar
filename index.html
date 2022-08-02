@@ -13,7 +13,18 @@
     <script src="https://rawgit.com/mayognaise/aframe-gif-component/master/dist/aframe-gif-component.min.js"></script>
     <script>
 
-
+        var context = new THREEx.ArToolkitContext({           // arToolkitContextの作成
+          debug: false,                                       // デバッグ用キャンバス表示（デフォルトfalse）
+          cameraParametersUrl: "camera_para.dat",             // カメラパラメータファイル
+          detectionMode: "mono",                              // 検出モード（color/color_and_matrix/mono/mono_and_matrix）
+          imageSmoothingEnabled: true,                        // 画像をスムージングするか（デフォルトfalse）
+          maxDetectionRate: 60,                               // マーカの検出レート（デフォルト60）
+          canvasWidth: source.parameters.sourceWidth,         // マーカ検出用画像の幅（デフォルト640）
+          canvasHeight: source.parameters.sourceHeight,       // マーカ検出用画像の高さ（デフォルト480）
+        });
+        context.init(function onCompleted(){                  // コンテクスト初期化が完了したら
+          camera.projectionMatrix.copy(context.getProjectionMatrix());   // 射影行列をコピー
+        });
         AFRAME.registerComponent('registerevents', {
             init: function () {
                 var marker = this.el;
